@@ -370,7 +370,6 @@ class RayPPOTrainer:
         self.sync_command = config.trainer.get("sync_cmd", None)
         if self.sync_command is not None:
             self.sync_command = self.sync_command.replace("$CHECKPOINT_DIR", self.config.trainer.default_local_dir)
-            self.sync_command = self.sync_command.split() 
 
         self._create_dataloader(train_dataset, val_dataset, collate_fn, train_sampler)
 
@@ -1059,7 +1058,7 @@ class RayPPOTrainer:
         
         if self.sync_command:
             print("Syncing checkpoints...")
-            subprocess.Popen(self.sync_command, stdin=None, stdout=None, stderr=None, close_fds=True)
+            subprocess.Popen(self.sync_command, stdin=None, stdout=None, stderr=None, close_fds=True, shell=True)
 
     def _load_checkpoint(self):
         if self.config.trainer.resume_mode == "disable":
